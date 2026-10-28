@@ -13,9 +13,11 @@ on:
 permissions:
   contents: read
 
+# Serialize image publishing so a newer push does not cancel an in-progress
+# build/push and leave the :latest tag temporarily stale.
 concurrency:
   group: auth-service-image-main
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   # Optional GitHub Actions repository variable: DOCKERHUB_IMAGE.
