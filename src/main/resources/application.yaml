@@ -2,7 +2,7 @@ spring:
   application:
     name: auth_service
   profiles:
-    active: "${spring.profile.active}"
+    active: ${SPRING_PROFILES_ACTIVE:dev}
 
   datasource:
     url: ${DATABASE_URL}
@@ -22,11 +22,6 @@ spring:
   liquibase:
     change-log: classpath:master.xml
     enabled: ${LIQUIBASE_ENABLED:true}
-
-  security:
-    user:
-      name: ${SPRING_SECURITY_USER_NAME:}
-      password: ${SPRING_SECURITY_USER_PASSWORD:}
 
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
@@ -75,7 +70,8 @@ spring:
               filters:
                 - StripPrefix=2
 
-  cloud.discovery.enabled: false
+  discovery:
+    enabled: false
 
 server:
   port: ${PORT:8181}
