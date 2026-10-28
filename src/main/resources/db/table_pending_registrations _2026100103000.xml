@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2026100103000-1" author="Panha">
+
+        <sql>
+           CREATE TABLE pending_registrations (
+            
+                registration_id SERIAL PRIMARY KEY,
+
+                name VARCHAR(255) NOT NULL,
+                user_name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                password_hash VARCHAR(255) NOT NULL,
+                dob DATE,
+
+                otp_hash VARCHAR(255) NOT NULL,
+                otp_expires_at TIMESTAMP NOT NULL,
+                otp_attempts INTEGER NOT NULL DEFAULT 0,
+
+                create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+            );
+        </sql>
+
+    </changeSet>
+
+</databaseChangeLog>

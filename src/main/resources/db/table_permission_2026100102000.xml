@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.liquibase.org/xml/ns/dbchangelog
+            https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2026100102000-1" author="Panha">
+
+        <sql>
+            CREATE TABLE permission (
+                permission_id INTEGER PRIMARY KEY,
+                permission VARCHAR(255),
+                desciption VARCHAR(255),
+
+                create_at TIMESTAMP,
+                update_at TIMESTAMP,
+                create_by VARCHAR(255),
+                update_by VARCHAR(255)
+            );
+
+            INSERT INTO permission (
+                permission_id,
+                permission,
+                desciption,
+                create_at
+            ) VALUES
+                (1, 'ADMIN', 'System Administrator', CURRENT_TIMESTAMP),
+                (2, 'USER', 'Normal User', CURRENT_TIMESTAMP);
+        </sql>
+
+    </changeSet>
+
+</databaseChangeLog>

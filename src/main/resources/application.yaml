@@ -1,0 +1,90 @@
+spring:
+    application:
+        name: auth_service
+    profiles:
+        active: "@spring.profile.active@"
+
+    datasource:
+        url: jdbc:postgresql://music-onyx-coral.ovh2.cloud.layerbase.dev:5432/music
+        username: postgres
+        password: FmTunbAH2aTKds0OvpJgPstf
+        driver-class-name: org.postgresql.Driver
+    
+    jpa:
+        hibernate:
+            show-sql: true
+            ddl-auto: update
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+                "[format_sql]": true
+    liquibase:
+        change-log: classpath:master.xml
+        enabled: true
+
+    security:
+        user:
+            name: Panha
+            password: Panha123 
+    mail:
+        host: smtp.gmail.com
+        username: panhamengleang@gmail.com
+        password: wysh fmtn okjs qwru
+        properties:
+          mail:
+              smtp:
+                  auth: true
+                  starttls:
+                      enable: true
+                      required: true
+    data:
+        redis:
+            host: localhost
+            port: 6379
+            database: 0
+
+    cloud:
+        gateway:
+            server:
+                webmvc:
+                    routes:
+                        - id: music-service-admin
+                          uri: https://music-service-210534030028.asia-southeast1.run.app
+                          predicates:
+                          - Path=/api/auth/admin/**
+                          filters:
+                          - StripPrefix=2
+
+                        - id: music-service-song
+                          uri: https://music-service-210534030028.asia-southeast1.run.app
+                          predicates:
+                          - Path=/api/auth/song/**
+                          filters:
+                          - StripPrefix=2
+
+                        - id: music-service-media
+                          uri: https://music-service-210534030028.asia-southeast1.run.app
+                          predicates:
+                          - Path=/api/auth/media/**
+                          filters:
+                          - StripPrefix=2
+
+        discovery:
+            enabled: false
+
+
+      
+
+server:
+    port: 8181
+
+
+jwt:
+    access-token:
+        secret: ${ACCESS_JWT_KEY}
+        expiration: 900000
+
+    refresh-token:
+        expiration: 604800000
+
+        

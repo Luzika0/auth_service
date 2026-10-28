@@ -1,0 +1,117 @@
+{"properties": [
+  {
+    "name": "jpa.hibernate.show-sql",
+    "type": "java.lang.String",
+    "description": "A description for 'jpa.hibernate.show-sql'"
+  },
+  {
+    "name": "jpa.liquibase",
+    "type": "java.lang.String",
+    "description": "A description for 'jpa.liquibase'"
+  },
+  {
+    "name": "jpa.liquibase",
+    "type": "java.lang.String",
+    "description": "A description for 'jpa.liquibase'"
+  },
+  {
+    "name": "jpa.change-log",
+    "type": "java.lang.String",
+    "description": "A description for 'jpa.change-log'"
+  },
+  {
+    "name": "jpa.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'jpa.enabled'"
+  },
+  {
+    "name": "jpa.properties.hibernate.dialect",
+    "type": "java.lang.String",
+    "description": "A description for 'jpa.properties.hibernate.dialect'"
+  },
+  {
+    "name": "jpa.properties.hibernate.[format_sql]",
+    "type": "java.lang.String",
+    "description": "A description for 'jpa.properties.hibernate.[format_sql]'"
+  },
+  {
+    "name": "jpa.hibernate.ddl-auto",
+    "type": "java.lang.String",
+    "description": "A description for 'jpa.hibernate.ddl-auto'"
+  },
+  {
+    "name": "spring.jpa.hibernate.show-sql",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.hibernate.show-sql'"
+  },
+  {
+    "name": "spring.jpa.liquibase",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.liquibase'"
+  },
+  {
+    "name": "spring.jpa.change-log",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.change-log'"
+  },
+  {
+    "name": "spring.jpa.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.enabled'"
+  },
+  {
+    "name": "spring.jpa.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.enabled'"
+  },
+  {
+    "name": "spring.jpa.hibernate.show-sql",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.hibernate.show-sql'"
+  },
+  {
+    "name": "jwt.access-token.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.access-token.secret'"
+  },
+  {
+    "name": "jwt.refresh-token.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.refresh-token.expiration'"
+  },
+  {
+    "name": "jwt.access-token.expiration",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.access-token.expiration'"
+  },
+  {
+    "name": "spring.cloud.gateway.server.webflux.reout",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.cloud.gateway.server.webflux.reout'"
+  },
+  {
+    "name": "spring.cloud.gateway.server.webflux.routes",
+    "type": "java.util.List<org.springframework.cloud.gateway.route.RouteDefinition>",
+    "description": "A description for 'spring.cloud.gateway.server.webflux.routes'"
+  },
+  {
+    "name": "spring.jpa.hibernate.show-sql",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.hibernate.show-sql'"
+  },
+  {
+    "name": "spring.cloud.gateway.routes",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.cloud.gateway.routes'"
+  },
+  {
+    "name": "jwt.access-token.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'jwt.access-token.secret'"
+  },
+  {
+    "name": "spring.jpa.hibernate.show-sql",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.jpa.hibernate.show-sql'"
+  }
+]}
