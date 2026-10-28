@@ -52,40 +52,15 @@ public class JwtService {
             long expiration,
             String type) {
 
-        if (user == null || user.getUserId() == null) {
-            throw new IllegalArgumentException("User and user ID must not be null");
-        }
-
-        if (expiration <= 0) {
-            throw new IllegalArgumentException("Token expiration must be greater than zero");
-        }
-
-        if (user.getPermission() == null
-                || user.getPermission().getPermission() == null
-                || user.getPermission().getPermission().isBlank()) {
-            throw new IllegalArgumentException("User permission must not be null or blank");
-        }
-
-        // The database permission should be ADMIN or USER.
-        String permission = user.getPermission()
-                .getPermission()
-                .trim()
-                .toUpperCase();
-
-        if (!permission.equals("ADMIN") && !permission.equals("USER")) {
-            throw new IllegalArgumentException("Unsupported permission: " + permission);
-        }
-
         Date now = new Date();
-        Date expiresAt = new Date(now.getTime() + expiration);
 
         var builder = Jwts.builder()
                 .id(UUID.randomUUID().toString())
                 .subject(String.valueOf(user.getUserId()))
                 .claim("type", type)
-                .claim("permission", permission)
+                .claim("permission", user.getPermission().getPermission())
                 .issuedAt(now)
-                .expiration(expiresAt);
+                .expiration(new Date(now.getTime() + expiration));
 
         if ("ACCESS".equals(type)) {
             builder.claim("userId", user.getUserId());
@@ -141,17 +116,15 @@ public class JwtService {
         }
 
         try {
-            Claims claims = extractAllClaims(token);
+            Long tokenUserId = extractUserId(token);
 
-            Long tokenUserId = Long.valueOf(claims.getSubject());
+            Long currentUserId = helper.getUser()
+                    .getUserId()
+                    .longValue();
 
-            Integer currentUserId = helper.getUser().getUserId();
-
-            return currentUserId != null
-                    && tokenUserId.equals(currentUserId.longValue())
-                    && "ACCESS".equals(claims.get("type", String.class))
-                    && claims.getExpiration() != null
-                    && claims.getExpiration().after(new Date());
+            return tokenUserId.equals(currentUserId)
+                    && "ACCESS".equals(extractTokenType(token))
+                    && !isTokenExpired(token);
 
         } catch (io.jsonwebtoken.JwtException
                 | IllegalArgumentException e) {
