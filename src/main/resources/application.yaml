@@ -77,6 +77,11 @@ server:
   port: ${PORT:8181}
   shutdown: graceful
 
+app:
+  cors:
+    # Comma-separated origin patterns. Set CORS_ALLOWED_ORIGINS in Cloud Run for production.
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:*,http://127.0.0.1:*}
+
 jwt:
   access-token:
     secret: ${ACCESS_JWT_KEY}
