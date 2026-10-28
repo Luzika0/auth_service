@@ -9,6 +9,6 @@ public class LogInResponse {
     private InnerLogInResponse token;
     private String tokenType;
 
-    public record InnerLogInResponse(Integer userId, String acessToken, String refreshToken) {
+    public record InnerLogInResponse(String permission, Integer userId, String acessToken, String refreshToken) {
     }
 }

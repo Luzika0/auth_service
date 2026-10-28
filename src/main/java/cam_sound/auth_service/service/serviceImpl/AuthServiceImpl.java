@@ -211,7 +211,7 @@ public class AuthServiceImpl implements AuthService {
             }
 
             data = LogInResponse.builder()
-                    .token(new InnerLogInResponse(jwtService.extractUserId(
+                    .token(new InnerLogInResponse(jwtService.extractPermission(refreshToken), jwtService.extractUserId(
                             acessToken).intValue(), acessToken, refreshToken))
                     .tokenType(Constant.STRING_BEARER)
                     .build();

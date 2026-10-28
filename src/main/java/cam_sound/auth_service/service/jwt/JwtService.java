@@ -59,6 +59,7 @@ public class JwtService {
                 .id(UUID.randomUUID().toString())
                 .subject(String.valueOf(user.getUserId()))
                 .claim("type", type)
+                .claim("permission", user.getPermission().getPermission())
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + expiration));
 
@@ -82,6 +83,10 @@ public class JwtService {
     public Long extractUserId(String token) {
         return Long.valueOf(
                 extractAllClaims(token).getSubject());
+    }
+
+    public String extractPermission(String token) {
+        return extractAllClaims(token).get("permission", String.class);
     }
 
     public UUID extractTokenId(String token) {

@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 "/api/auth/otp-verify",
                                 "/api/auth/forget-password",
                                 "/api/auth/media/image",
+                                "/api/auth/media/list-song",
                                 "/api/auth/media/artist",
                                 "/eureka/**")
                         .permitAll()
