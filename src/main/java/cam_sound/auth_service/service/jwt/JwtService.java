@@ -1,4 +1,3 @@
-
 package cam_sound.auth_service.service.jwt;
 
 import java.nio.charset.StandardCharsets;
@@ -53,15 +52,40 @@ public class JwtService {
             long expiration,
             String type) {
 
+        if (user == null || user.getUserId() == null) {
+            throw new IllegalArgumentException("User and user ID must not be null");
+        }
+
+        if (expiration <= 0) {
+            throw new IllegalArgumentException("Token expiration must be greater than zero");
+        }
+
+        if (user.getPermission() == null
+                || user.getPermission().getPermission() == null
+                || user.getPermission().getPermission().isBlank()) {
+            throw new IllegalArgumentException("User permission must not be null or blank");
+        }
+
+        // The database permission should be ADMIN or USER.
+        String permission = user.getPermission()
+                .getPermission()
+                .trim()
+                .toUpperCase();
+
+        if (!permission.equals("ADMIN") && !permission.equals("USER")) {
+            throw new IllegalArgumentException("Unsupported permission: " + permission);
+        }
+
         Date now = new Date();
+        Date expiresAt = new Date(now.getTime() + expiration);
 
         var builder = Jwts.builder()
                 .id(UUID.randomUUID().toString())
                 .subject(String.valueOf(user.getUserId()))
                 .claim("type", type)
-                .claim("permission", user.getPermission().getPermission())
+                .claim("permission", permission)
                 .issuedAt(now)
-                .expiration(new Date(now.getTime() + expiration));
+                .expiration(expiresAt);
 
         if ("ACCESS".equals(type)) {
             builder.claim("userId", user.getUserId());
@@ -86,7 +110,8 @@ public class JwtService {
     }
 
     public String extractPermission(String token) {
-        return extractAllClaims(token).get("permission", String.class);
+        return extractAllClaims(token)
+                .get("permission", String.class);
     }
 
     public UUID extractTokenId(String token) {
@@ -116,15 +141,17 @@ public class JwtService {
         }
 
         try {
-            Long tokenUserId = extractUserId(token);
+            Claims claims = extractAllClaims(token);
 
-            Long currentUserId = helper.getUser()
-                    .getUserId()
-                    .longValue();
+            Long tokenUserId = Long.valueOf(claims.getSubject());
 
-            return tokenUserId.equals(currentUserId)
-                    && "ACCESS".equals(extractTokenType(token))
-                    && !isTokenExpired(token);
+            Integer currentUserId = helper.getUser().getUserId();
+
+            return currentUserId != null
+                    && tokenUserId.equals(currentUserId.longValue())
+                    && "ACCESS".equals(claims.get("type", String.class))
+                    && claims.getExpiration() != null
+                    && claims.getExpiration().after(new Date());
 
         } catch (io.jsonwebtoken.JwtException
                 | IllegalArgumentException e) {
