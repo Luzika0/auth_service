@@ -13,14 +13,14 @@ on:
 permissions:
   contents: read
 
-# Keep one image build running at a time for this branch.
 concurrency:
   group: auth-service-image-main
   cancel-in-progress: true
 
 env:
-  # Image repository. Override this in the workflow if your Docker Hub repo differs.
-  IMAGE_NAME: panha123456765432/auth-service
+  # Optional GitHub Actions repository variable: DOCKERHUB_IMAGE.
+  # Default matches the auth_service repository name and your Docker Hub account.
+  IMAGE_NAME: ${{ vars.DOCKERHUB_IMAGE || 'panha123456765432/auth_service' }}
   JAVA_VERSION: "21"
 
 jobs:
