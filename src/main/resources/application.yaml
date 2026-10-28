@@ -17,7 +17,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: false
+        
 
   liquibase:
     change-log: classpath:master.xml
@@ -73,8 +73,8 @@ spring:
               filters:
                 - StripPrefix=2
 
-  discovery:
-    enabled: false
+    discovery:
+        enabled: false
 
 server:
   port: ${PORT:8181}

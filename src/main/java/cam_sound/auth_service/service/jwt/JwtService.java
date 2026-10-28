@@ -1,3 +1,4 @@
+
 package cam_sound.auth_service.service.jwt;
 
 import java.nio.charset.StandardCharsets;
@@ -58,17 +59,20 @@ public class JwtService {
                 .id(UUID.randomUUID().toString())
                 .subject(String.valueOf(user.getUserId()))
                 .claim("type", type)
-                .claim("permission", user.getPermission().getPermission())
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + expiration));
 
         if ("ACCESS".equals(type)) {
-            builder.claim("userId", user.getUserId());
+            builder.claim("userId", user.getUserId()).claim("permission", user.getPermission().getPermission());
         }
 
         return builder
                 .signWith(getSigningKey())
                 .compact();
+    }
+
+    public String extractPermission(String token) {
+        return extractAllClaims(token).get("permission", String.class);
     }
 
     private Claims extractAllClaims(String token) {
@@ -82,11 +86,6 @@ public class JwtService {
     public Long extractUserId(String token) {
         return Long.valueOf(
                 extractAllClaims(token).getSubject());
-    }
-
-    public String extractPermission(String token) {
-        return extractAllClaims(token)
-                .get("permission", String.class);
     }
 
     public UUID extractTokenId(String token) {
