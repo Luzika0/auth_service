@@ -59,12 +59,10 @@ public class JwtService {
                 .id(UUID.randomUUID().toString())
                 .subject(String.valueOf(user.getUserId()))
                 .claim("type", type)
+                .claim("userId", user.getUserId())
+                .claim("permission", user.getPermission().getPermission())
                 .issuedAt(now)
                 .expiration(new Date(now.getTime() + expiration));
-
-        if ("ACCESS".equals(type)) {
-            builder.claim("userId", user.getUserId()).claim("permission", user.getPermission().getPermission());
-        }
 
         return builder
                 .signWith(getSigningKey())
