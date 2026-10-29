@@ -359,32 +359,66 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public GeneralResponseData refreshToken(String refreshToken) throws AppException {
+
         if (refreshToken == null || refreshToken.isBlank()) {
             throw new AppException(
                     ErrorCode.INVALID_CREDENTIALS,
                     Constant.INVALID_REQUEST);
         }
 
-        String tokenType = jwtService.extractTokenType(refreshToken);
+        // 1. Validate the token type
+        final String tokenType = jwtService.extractTokenType(refreshToken);
 
         if (!"REFRESH".equals(tokenType)) {
             throw new AppException(
                     ErrorCode.INVALID_CREDENTIALS,
                     "Invalid refresh token type");
         }
+
+        // 2. Check expiration
         if (jwtService.isTokenExpired(refreshToken)) {
             refreshTokenRepository.deleteByToken(refreshToken);
-            throw new AppException(ErrorCode.TOKEN_EXPIRED, Constant.STRING_TOKEN_EXPIRED);
+
+            throw new AppException(
+                    ErrorCode.TOKEN_EXPIRED,
+                    Constant.STRING_TOKEN_EXPIRED);
         }
+
+        // 3. Reject revoked refresh tokens
         if (Boolean.TRUE.equals(
                 refreshTokenRepository.existsByTokenAndRevokedTrue(refreshToken))) {
-            throw new AppException(ErrorCode.REFRESH_TOKEN_REVOKED, Constant.REFRESH_TOKEN_REVOKED);
+            throw new AppException(
+                    ErrorCode.REFRESH_TOKEN_REVOKED,
+                    Constant.REFRESH_TOKEN_REVOKED);
         }
-        final var userId = jwtService.extractUserId(refreshToken);
-        final var user = userRepository.findByUserId(userId).get();
-        final var newAcessToken = jwtService.generateAccessToken(user);
+
+        // 4. Ensure the refresh token is registered and active
+        final var storedToken = refreshTokenRepository.findByToken(refreshToken)
+                .orElseThrow(() -> new AppException(
+                        ErrorCode.INVALID_CREDENTIALS,
+                        "Refresh token not found"));
+
+        if (Boolean.TRUE.equals(storedToken.getRevoked())) {
+            throw new AppException(
+                    ErrorCode.REFRESH_TOKEN_REVOKED,
+                    Constant.REFRESH_TOKEN_REVOKED);
+        }
+
+        // 5. Find the user safely
+        final Long userId = jwtService.extractUserId(refreshToken);
+
+        final var user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new AppException(
+                        ErrorCode.INVALID_CREDENTIALS,
+                        "User not found"));
+
+        // 6. Generate a new access token using the current user permissions
+        final String newAccessToken = jwtService.generateAccessToken(user);
+
+        // 7. Return the new access token
         Map<String, String> token = new HashMap<>();
-        token.put("newAcessToken", newAcessToken);
+        token.put("newAccessToken", newAccessToken);
+
         generalResponseData.setData(token);
         return generalResponseData;
     }
