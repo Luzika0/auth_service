@@ -84,6 +84,9 @@ The gateway forwards these prefixes to `MUSIC_SERVICE_URL` and removes the first
 
 The Cloud Run service URL must not include `:8080`; Cloud Run terminates HTTPS on the public URL. Ensure the music-service revision is healthy and its database credentials work before diagnosing a gateway response.
 
+
+The gateway's trusted identity filter removes any client-supplied `X-User-Id` and replaces it with the ID from the principal authenticated by `JwtFilter` before forwarding requests to downstream services. Do not trust a browser-provided identity header. The Music Service uses this trusted value to scope playback and account-library records.
+
 ## Deploy to Cloud Run
 
 Build and push an image to Artifact Registry, then deploy the image with the required environment variables or (preferably) Secret Manager references. Configure the Cloud Run container port as `8181` or let the service use the `PORT` environment variable. Set `REDIS_HOST` to a reachable managed/private Redis endpoint; the Compose service named `redis` exists only on your local Docker network and is not reachable from Cloud Run.
