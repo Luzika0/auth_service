@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .addFilterBefore(
                         jwtFilter,
                         UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new TrustedIdentityHeaderFilter(), JwtFilter.class)
                 .addFilterBefore(injectionProtectionFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .addFilterBefore(rateLimitFilter, JwtFilter.class);

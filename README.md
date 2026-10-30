@@ -80,8 +80,12 @@ The gateway forwards these prefixes to `MUSIC_SERVICE_URL` and removes the first
 | `/api/auth/admin/**` | `/admin/**` |
 | `/api/auth/song/**` | `/song/**` |
 | `/api/auth/media/**` | `/media/**` |
+| `/api/auth/library/**` | `/library/**` |
 
 The Cloud Run service URL must not include `:8080`; Cloud Run terminates HTTPS on the public URL. Ensure the music-service revision is healthy and its database credentials work before diagnosing a gateway response.
+
+
+The gateway's trusted identity filter removes any client-supplied `X-User-Id` and replaces it with the ID from the principal authenticated by `JwtFilter` before forwarding requests to downstream services. Do not trust a browser-provided identity header. The Music Service uses this trusted value to scope playback and account-library records.
 
 ## Deploy to Cloud Run
 

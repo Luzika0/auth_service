@@ -73,6 +73,13 @@ spring:
               filters:
                 - StripPrefix=2
 
+            - id: music-service-library
+              uri: ${MUSIC_SERVICE_URL:https://music-service-210534030028.asia-southeast1.run.app}
+              predicates:
+                - Path=/api/auth/library/**
+              filters:
+                - StripPrefix=2
+
     discovery:
         enabled: false
 
