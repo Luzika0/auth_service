@@ -53,23 +53,30 @@ spring:
         webmvc:
           routes:
             - id: music-service-admin
-              uri: ${MUSIC_SERVICE_URL:https://music-service-210534030028.asia-southeast1.run.app}
+              uri: ${MUSIC_SERVICE_URL}
               predicates:
                 - Path=/api/auth/admin/**
               filters:
                 - StripPrefix=2
 
             - id: music-service-song
-              uri: ${MUSIC_SERVICE_URL:https://music-service-210534030028.asia-southeast1.run.app}
+              uri: ${MUSIC_SERVICE_URL}
               predicates:
                 - Path=/api/auth/song/**
               filters:
                 - StripPrefix=2
 
             - id: music-service-media
-              uri: ${MUSIC_SERVICE_URL:https://music-service-210534030028.asia-southeast1.run.app}
+              uri: ${MUSIC_SERVICE_URL}
               predicates:
                 - Path=/api/auth/media/**
+              filters:
+                - StripPrefix=2
+
+            - id: music-service-library
+              uri: ${MUSIC_SERVICE_URL}
+              predicates:
+                - Path=/api/auth/library/**
               filters:
                 - StripPrefix=2
 
